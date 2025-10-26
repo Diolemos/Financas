@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.projectlombk:lombok")
+    compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
     // Use JUnit test framework.
     testImplementation(libs.junit)
