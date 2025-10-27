@@ -30,4 +30,21 @@ public abstract  class Wallet {
     public long getFunds(){
         return money.size();
     }
+
+    public void addMoney(final List<Money> money, final BankService service, final String description){
+        var history = new MoneyAudit(UUID.randomUUID(), service, description, OffsetDateTime.now());
+        money.forEach( (Money m) -> m.addHistory(history));
+        this.money.addAll(money);
+    }
+
+    public List<Money> reduceMoney(final long amount){
+        List<Money> toRemove = new ArrayList<>();
+        for (int i = 0; i < amount; i++){
+            toRemove.add(this.money.removeFirst());
+        }
+        return toRemove;
+    }
+    public List<MoneyAudit> getFinancialTransactions(){
+        return  money.stream().flatMap((Money m)->m.getHistory().stream()).toList();
+    }
 }
