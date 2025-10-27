@@ -10,11 +10,6 @@ plugins {
     application
 }
 
-configurations{
-    compileOnly{
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -22,14 +17,17 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok:1.18.36")
-    implementation("org.projectlombok:lombok:1.18.36")
-    // Use JUnit test framework.
-    testImplementation(libs.junit)
+    // Lombok — compile-time only
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 
-    // This dependency is used by the application.
+    // For tests (optional, but recommended)
+    testCompileOnly("org.projectlombok:lombok:1.18.42")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
+
+    // Your other dependencies
     implementation(libs.guava)
+    testImplementation(libs.junit)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
