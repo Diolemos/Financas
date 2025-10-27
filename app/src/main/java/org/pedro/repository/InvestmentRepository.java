@@ -12,7 +12,7 @@ import org.pedro.model.Investment;
 import org.pedro.model.InvestmentWallet;
 
 public class InvestmentRepository {
-    private final List<InvestmentWallet> investments = new ArrayList<>();
+    private final List<Investment> investments = new ArrayList<>();
     private final List<InvestmentWallet> wallets = new ArrayList<>();
     private long nextId ;
 
@@ -44,7 +44,6 @@ public class InvestmentRepository {
 
     public Investment findById(final long id) {
         return investments.stream()
-                .map(InvestmentWallet::getInvestment)
                 .filter(investment -> investment.id() == id)
                 .findFirst()
                 .orElseThrow(() -> new InvestmentNotFoundException("Investimento não encontrado"));
@@ -57,7 +56,7 @@ public class InvestmentRepository {
                 .orElseThrow(() -> new WalletNotFoundException("Carteira não encontrada"));
     }
 
-    public List<InvestmentWallet> listInvestments() {
+    public List<Investment> listInvestments() {
         return new ArrayList<>(investments);
     }
 
@@ -69,7 +68,7 @@ public class InvestmentRepository {
     public Investment createInvestment(final long tax, final long funds) {
         long id = this.nextId++;
         Investment investment = new Investment(id, tax, funds);
-        investments.add(new InvestmentWallet(investment, null, funds));
+        investments.add(investment);
         return investment;
     }
 

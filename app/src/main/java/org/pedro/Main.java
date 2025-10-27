@@ -17,15 +17,13 @@ public class Main {
         System.out.println("4. Depositar na conta");
         System.out.println("5. Sacar da conta");
         System.out.println("6. Transferir dinheiro entre contas");
-        System.out.println("7. Investir");
-        System.out.println("8. Resgatar investimento");
-        System.out.println("9. Listar contas ");
-        System.out.println("10. Listar investimentos");
-        System.out.println("11. Listar carteiras de investimento");
-      
-        System.out.println("12. Atualizar investimento");
-        System.out.println("13. Histórico de conta");
-        System.out.println("14. Sair");
+        System.out.println("7. Resgatar investimento");
+        System.out.println("8. Listar contas ");
+        System.out.println("9. Listar investimentos");
+        System.out.println("10. Listar carteiras de investimento");
+        System.out.println("11. Atualizar investimento");
+        System.out.println("12. Histórico de conta");
+        System.out.println("13. Sair");
         int opcao = Integer.parseInt(System.console().readLine());
         switch(opcao){
             case 1:
@@ -56,6 +54,16 @@ public class Main {
                 break;
             case 3:
                 // Fazer um investimento
+                System.out.println("=== Investimentos Disponíveis ===");
+                if (investmentRepository.listInvestments().isEmpty()) {
+                    System.out.println("Nenhum investimento cadastrado. Crie um investimento primeiro.");
+                    break;
+                }
+                investmentRepository.listInvestments().forEach(investment -> {
+                    System.out.println("ID: " + investment.id() + 
+                                     " - Taxa: " + investment.tax() + 
+                                     " - Fundos mínimos: " + investment.initalFunds());
+                });
                 System.out.print("Digite a chave PIX da conta: ");
                 String accountPix = System.console().readLine();
                 System.out.print("Digite o ID do investimento: ");
@@ -110,19 +118,6 @@ public class Main {
                 }
                 break;
             case 7:
-                // Investir
-                System.out.print("Digite a chave PIX: ");
-                String investPix = System.console().readLine();
-                System.out.print("Digite o valor a investir: ");
-                long investAmount = Long.parseLong(System.console().readLine());
-                try {
-                    investmentRepository.deposit(investPix, investAmount);
-                    System.out.println("Investimento realizado com sucesso!");
-                } catch (Exception e) {
-                    System.out.println("Erro: " + e.getMessage());
-                }
-                break;
-            case 8:
                 // Resgatar investimento
                 System.out.print("Digite a chave PIX: ");
                 String redeemPix = System.console().readLine();
@@ -135,7 +130,7 @@ public class Main {
                     System.out.println("Erro: " + e.getMessage());
                 }
                 break;
-            case 9:
+            case 8:
                 // Listar contas
                 System.out.println("=== Contas ===");
                 if (accountRepository.getAllAccounts().isEmpty()) {
@@ -146,20 +141,20 @@ public class Main {
                     });
                 }
                 break;
-            case 10:
+            case 9:
                 // Listar investimentos
                 System.out.println("=== Investimentos ===");
                 if (investmentRepository.listInvestments().isEmpty()) {
                     System.out.println("Nenhum investimento cadastrado.");
                 } else {
                     investmentRepository.listInvestments().forEach(investment -> {
-                        System.out.println("Investimento ID: " + investment.getInvestment().id() + 
-                                         " - Taxa: " + investment.getInvestment().tax() + 
-                                         " - Fundos iniciais: " + investment.getInvestment().initalFunds());
+                        System.out.println("Investimento ID: " + investment.id() + 
+                                         " - Taxa: " + investment.tax() + 
+                                         " - Fundos iniciais: " + investment.initalFunds());
                     });
                 }
                 break;
-            case 11:
+            case 10:
                 // Listar carteiras de investimento
                 System.out.println("=== Carteiras de Investimento ===");
                 if (investmentRepository.listWallets().isEmpty()) {
@@ -172,7 +167,7 @@ public class Main {
                     });
                 }
                 break;
-            case 12:
+            case 11:
                 // Atualizar investimento
                 System.out.print("Digite a porcentagem de atualização dos investimentos: ");
                 long percent = Long.parseLong(System.console().readLine());
@@ -183,7 +178,7 @@ public class Main {
                     System.out.println("Erro: " + e.getMessage());
                 }
                 break;
-            case 13:
+            case 12:
                 // Histórico de conta
                 System.out.print("Digite a chave PIX: ");
                 String historyPix = System.console().readLine();
@@ -198,7 +193,7 @@ public class Main {
                     System.out.println("Erro: " + e.getMessage());
                 }
                 break;
-            case 14:
+            case 13:
                 // Sair
                 System.exit(0);
                 break;
