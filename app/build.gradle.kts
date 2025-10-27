@@ -24,6 +24,7 @@ repositories {
 dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
+    implementation("org.projectlombok:lombok:1.18.36")
     // Use JUnit test framework.
     testImplementation(libs.junit)
 
