@@ -1,10 +1,12 @@
 package org.pedro.repository;
 
-import org.pedro.model.AccountWallet;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pedro.exception.AccountNotfoundException;
 import org.pedro.exception.NotEnoughFundsException;
-import java.util.List;
-import java.util.ArrayList;
+import org.pedro.exception.PixInUseException;
+import org.pedro.model.AccountWallet;
 
 public class AccountRepository {
     private List<AccountWallet> accounts;
@@ -21,7 +23,16 @@ public class AccountRepository {
     }
 
     public AccountWallet create(final List<String> pix, final long amount) {
-        AccountWallet newAccount = new AccountWallet(amount,pix);
+        List<String> pixInUse = new ArrayList<>();
+        accounts.forEach(account -> pixInUse.addAll(account.getPix()));
+        
+        for (int i = 0; i < pix.size(); i++) {
+            if (pixInUse.contains(pix.get(i))) {
+                throw new PixInUseException("A chave PIX '" + pix.get(i) + "' já está em uso");
+            }
+        }
+        
+        AccountWallet newAccount = new AccountWallet(amount, pix);
         accounts.add(newAccount);
         return newAccount;
     }

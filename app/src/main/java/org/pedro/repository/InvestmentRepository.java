@@ -3,6 +3,7 @@ package org.pedro.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pedro.exception.AccountWithInvestmentException;
 import org.pedro.exception.InvestmentNotFoundException;
 import org.pedro.exception.NotEnoughFundsException;
 import org.pedro.exception.WalletNotFoundException;
@@ -67,6 +68,13 @@ public class InvestmentRepository {
 
     public InvestmentWallet initInvestment(final AccountWallet account, final long id) {
         Investment investment = findById(id);
+        
+        List<AccountWallet> accountsInUse = new ArrayList<>();
+        wallets.forEach(wallet -> accountsInUse.add(wallet.getAccount()));
+        
+        if (accountsInUse.contains(account)) {
+            throw new AccountWithInvestmentException("Esta conta já possui investimentos");
+        }
         
         if (account.getFunds() < investment.initalFunds()) {
             throw new NotEnoughFundsException("Fundos insuficientes para realizar o investimento");
