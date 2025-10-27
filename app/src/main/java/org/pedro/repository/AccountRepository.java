@@ -17,7 +17,7 @@ public class AccountRepository {
 
     public AccountWallet findByPix(final String pix) {
         return accounts.stream()
-                .filter(account -> account.getPix().equals(pix))
+                .filter(account -> account.getPix().contains(pix))
                 .findFirst()
                 .orElseThrow(()->new AccountNotfoundException("A conta com a chave pix '"+ pix +"' não existe ou foi encerrada."));
     }
