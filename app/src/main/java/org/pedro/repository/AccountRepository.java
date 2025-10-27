@@ -66,4 +66,9 @@ public class AccountRepository {
     public List<AccountWallet> getAllAccounts() {
         return new ArrayList<>(accounts);
     }
+
+    public List<org.pedro.model.MoneyAudit> getAccountHistory(final String pix) {
+        AccountWallet account = findByPix(pix);
+        return account.getFinancialTransactions();
+    }
 }

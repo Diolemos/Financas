@@ -95,4 +95,9 @@ public class InvestmentRepository {
     public static AccountWallet createAccount(final AccountRepository accountRepository, final List<String> pix, final long amount) {
         return accountRepository.create(pix, amount);
     }
+
+    public List<org.pedro.model.MoneyAudit> getInvestmentWalletHistory(final String pix) {
+        InvestmentWallet wallet = findWalletByAccount(pix);
+        return wallet.getFinancialTransactions();
+    }
 }
