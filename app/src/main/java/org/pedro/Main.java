@@ -34,8 +34,12 @@ public class Main {
                 String pix = System.console().readLine();
                 System.out.print("Digite o valor inicial: ");
                 long initialAmount = Long.parseLong(System.console().readLine());
-                accountRepository.create(java.util.Arrays.asList(pix), initialAmount);
-                System.out.println("Conta criada com sucesso!");
+                try {
+                    accountRepository.create(java.util.Arrays.asList(pix), initialAmount);
+                    System.out.println("Conta criada com sucesso!");
+                } catch (Exception e) {
+                    System.out.println("Erro: " + e.getMessage());
+                }
                 break;
             case 2:
                 // Criar investimento
@@ -134,38 +138,65 @@ public class Main {
             case 9:
                 // Listar contas
                 System.out.println("=== Contas ===");
-                accountRepository.getAllAccounts().forEach(account -> {
-                    System.out.println("Conta: " + account.getPix() + " - Saldo: " + account.getFunds());
-                });
+                if (accountRepository.getAllAccounts().isEmpty()) {
+                    System.out.println("Nenhuma conta cadastrada.");
+                } else {
+                    accountRepository.getAllAccounts().forEach(account -> {
+                        System.out.println("Conta: " + account.getPix() + " - Saldo: " + account.getFunds());
+                    });
+                }
                 break;
             case 10:
                 // Listar investimentos
                 System.out.println("=== Investimentos ===");
-                investmentRepository.listInvestments().forEach(investment -> {
-                    System.out.println("Investimento ID: " + investment.getInvestment().id() + 
-                                     " - Taxa: " + investment.getInvestment().tax() + 
-                                     " - Fundos iniciais: " + investment.getInvestment().initalFunds());
-                });
+                if (investmentRepository.listInvestments().isEmpty()) {
+                    System.out.println("Nenhum investimento cadastrado.");
+                } else {
+                    investmentRepository.listInvestments().forEach(investment -> {
+                        System.out.println("Investimento ID: " + investment.getInvestment().id() + 
+                                         " - Taxa: " + investment.getInvestment().tax() + 
+                                         " - Fundos iniciais: " + investment.getInvestment().initalFunds());
+                    });
+                }
                 break;
             case 11:
                 // Listar carteiras de investimento
                 System.out.println("=== Carteiras de Investimento ===");
-                investmentRepository.listWallets().forEach(wallet -> {
-                    System.out.println("Conta: " + wallet.getAccount().getPix() + 
-                                     " - Saldo do investimento: " + wallet.getFunds() +
-                                     " - Investimento ID: " + wallet.getInvestment().id());
-                });
+                if (investmentRepository.listWallets().isEmpty()) {
+                    System.out.println("Nenhuma carteira de investimento cadastrada.");
+                } else {
+                    investmentRepository.listWallets().forEach(wallet -> {
+                        System.out.println("Conta: " + wallet.getAccount().getPix() + 
+                                         " - Saldo do investimento: " + wallet.getFunds() +
+                                         " - Investimento ID: " + wallet.getInvestment().id());
+                    });
+                }
                 break;
             case 12:
                 // Atualizar investimento
                 System.out.print("Digite a porcentagem de atualização dos investimentos: ");
                 long percent = Long.parseLong(System.console().readLine());
-                investmentRepository.updateAmount(percent);
-                System.out.println("Investimentos atualizados com sucesso!");
+                try {
+                    investmentRepository.updateAmount(percent);
+                    System.out.println("Investimentos atualizados com sucesso!");
+                } catch (Exception e) {
+                    System.out.println("Erro: " + e.getMessage());
+                }
                 break;
             case 13:
                 // Histórico de conta
-                System.out.println("Opção 13: Histórico de conta");
+                System.out.print("Digite a chave PIX: ");
+                String historyPix = System.console().readLine();
+                try {
+                    System.out.println("=== Histórico de Transações ===");
+                    accountRepository.getAccountHistory(historyPix).forEach(audit -> {
+                        System.out.println("Data: " + audit.createdAt() + 
+                                         " - Serviço: " + audit.targetService() + 
+                                         " - Descrição: " + audit.description());
+                    });
+                } catch (Exception e) {
+                    System.out.println("Erro: " + e.getMessage());
+                }
                 break;
             case 14:
                 // Sair
