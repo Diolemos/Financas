@@ -38,7 +38,7 @@ public class InvestmentRepository {
         return wallet;
     }
 
-    public void updateAmounts(final long percent) {
+    public void updateAmount(final long percent) {
         wallets.forEach(wallet -> wallet.updateAmount(percent));
     }
 
@@ -66,6 +66,13 @@ public class InvestmentRepository {
         return investment;
     }
 
+    public Investment createInvestment(final long tax, final long funds) {
+        long id = this.nextId++;
+        Investment investment = new Investment(id, tax, funds);
+        investments.add(new InvestmentWallet(investment, null, funds));
+        return investment;
+    }
+
     public InvestmentWallet initInvestment(final AccountWallet account, final long id) {
         Investment investment = findById(id);
         
@@ -83,5 +90,9 @@ public class InvestmentRepository {
         InvestmentWallet investmentWallet = new InvestmentWallet(investment, account, investment.initalFunds());
         wallets.add(investmentWallet);
         return investmentWallet;
+    }
+
+    public static AccountWallet createAccount(final AccountRepository accountRepository, final List<String> pix, final long amount) {
+        return accountRepository.create(pix, amount);
     }
 }

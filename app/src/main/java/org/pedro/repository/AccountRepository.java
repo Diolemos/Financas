@@ -62,4 +62,8 @@ public class AccountRepository {
         sourceAccount.reduceMoney(amount);
         targetAccount.addMoney(amount, "Transferência recebida de " + sourcePix);
     }
+
+    public List<AccountWallet> getAllAccounts() {
+        return new ArrayList<>(accounts);
+    }
 }
