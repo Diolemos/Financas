@@ -22,4 +22,8 @@ public class AccountWallet extends Wallet {
         var money = generateMoney(amount, description);
         this.money.addAll(money);
     }
+
+    public List<String> getPix() {
+        return pix;
+    }
 }
